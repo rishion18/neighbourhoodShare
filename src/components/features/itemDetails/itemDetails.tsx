@@ -10,21 +10,23 @@ import {
 } from "@mui/material";
 import PageContainer from "../../layouts/pageContainer";
 import Breadcrumb from "../../common/breadCrumbs";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useItems } from "../../../hooks/useItems";
 import type { Item } from "../../../redux/slices/item.slice";
 import { useEffect, useState } from "react";
-
+import { useSelector, useDispatch } from "react-redux";
+import { createRequest, type BorrowRequest } from "../../../redux/slices/requests.slice";
 
 const ItemDetailPage = () => {
-
-  const { id } = useParams(); 
-  const {items} = useItems();
+  const { id } = useParams();
+  const { items } = useItems();
   const [item, setItem] = useState<Item | null>(null);
+  const dispatch = useDispatch();
+  const requests = useSelector((state:any) => state.requests);
 
   useEffect(() => {
-    if(Array.isArray(items) && items.length > 0 && id) {
-      const item = items?.find((itm:Item) => itm.id === id); 
+    if (Array.isArray(items) && items.length > 0 && id) {
+      const item = items.find((itm: Item) => itm.id === id);
       setItem(item || null);
     }
   }, [id, items]);
@@ -33,29 +35,32 @@ const ItemDetailPage = () => {
     return <Typography>Item not found.</Typography>;
   }
 
+  const existingRequest = requests.find(
+    (r:BorrowRequest) => r.itemId === item.id && r.status !== "cancelled"
+  );
+
   const breadcrumbItems = [
     { title: "Home", url: "/" },
-    { title: item?.name },
+    { title: item.name },
   ];
 
   return (
     <PageContainer>
       <Breadcrumb items={breadcrumbItems} />
-
       <Box
         sx={{
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
-          padding:'16px',
+          padding: "16px",
           gap: 4,
         }}
       >
-        <Card sx={{ maxWidth: {sm: '100%', md:'50%'}, width:{sm:'100%', md:'50%'} }}>
+        <Card sx={{ maxWidth: { sm: "100%", md: "50%" }, width: { sm: "100%", md: "50%" } }}>
           <CardMedia
             component="img"
             image={item.image}
             alt={item.name}
-            sx={{ height: { xs: 300 , md: 400}, objectFit: "cover" }}
+            sx={{ height: { xs: 300, md: 400 }, objectFit: "cover" }}
           />
         </Card>
 
@@ -95,8 +100,25 @@ const ItemDetailPage = () => {
           </Box>
 
           <Box sx={{ mt: 3 }}>
-            {item.available && !item.sold ? (
-              <Button variant="contained" color="primary">
+            {existingRequest ? (
+              <Typography variant="body2" color="primary">
+                A borrow request has already been made. Current status:{" "}
+                <strong>{existingRequest.status}</strong>.
+              </Typography>
+            ) : item.available && !item.sold ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() =>
+                  dispatch(
+                    createRequest({
+                      itemId: item.id,
+                      itemName: item.name,
+                      owner: item.owner,
+                    })
+                  )
+                }
+              >
                 Request to Borrow
               </Button>
             ) : (
