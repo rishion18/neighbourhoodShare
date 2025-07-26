@@ -35,7 +35,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+      <Typography variant="h6" sx={{ my: 2, color: "black" }}>
         Neighborhood Share
       </Typography>
       <Divider />
@@ -43,7 +43,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         {navItems.map((item) => (
           <ListItem key={item.label} disablePadding>
             <ListItemButton
-              sx={{ textAlign: "left" }}
+              sx={{ textAlign: "left", color: "black" }}
               onClick={() => navigate(item.path)}
             >
               <ListItemText primary={item.label} />
@@ -57,20 +57,35 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar component="nav" position="fixed" sx={{ bgcolor: "primary.main" }}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Neighborhood Share
-          </Typography>
-        </Toolbar>
+      <AppBar
+        component="nav"
+        position="fixed"
+        sx={{
+          bgcolor: "white",
+          boxShadow: "none",
+          borderBottom: "1px solid #ccc",
+        }}
+      >
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "81%"}, 
+            margin: { xs: "0", sm: "0 auto" }, 
+            padding: { xs: "0", sm: "0 16px" },
+          }}
+        >
+          <Toolbar>
+            <IconButton
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none", color: "black" } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" sx={{ flexGrow: 1, color: "black" }}>
+              Neighborhood Share
+            </Typography>
+          </Toolbar>
+        </Box>
       </AppBar>
       <Box component="nav">
         <Drawer
@@ -89,12 +104,12 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
           {drawer}
         </Drawer>
       </Box>
-      <Box 
-        component="main" 
-        sx={{ 
-          flexGrow: 1, 
-          mt: 8, 
-          width: "100%"
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          mt: 8,
+          width: "100%",
         }}
       >
         {children}

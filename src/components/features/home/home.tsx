@@ -1,9 +1,9 @@
 import { useItems } from "../../../hooks/useItems";
 import type { Item } from "../../../redux/slices/item.slice";
 import PageContainer from "../../layouts/pageContainer";
-import ProductCard from "../../ui/productCard";
-import Filter from "./filter";
 import { useMemo, useState } from "react";
+import ProductSection from "./productSection";
+import Filter from "./filter";
 
 const Home = () => {
   const { items } = useItems();
@@ -15,14 +15,18 @@ const Home = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
   const [selectedAvailability, setSelectedAvailability] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+    const [mobileOpen, setMobileOpen] = useState(false);
+  
 
   const handleFilterChange = (
-    type: "category" | "condition" | "availability",
-    selected: string[]
+    type: "category" | "condition" | "availability" | "search",
+    selected: string[] | string
   ) => {
-    if (type === "category") setSelectedCategories(selected);
-    else if (type === "condition") setSelectedConditions(selected);
-    else if (type === "availability") setSelectedAvailability(selected);
+    if (type === "category") setSelectedCategories(selected as string[]);
+    else if (type === "condition") setSelectedConditions(selected as string[]);
+    else if (type === "availability") setSelectedAvailability(selected as string[]);
+    else if (type === "search") setSearchQuery(selected as string);
   };
 
   const filteredItems = useMemo(() => {
@@ -37,20 +41,28 @@ const Home = () => {
       const matchesAvailability =
         selectedAvailability.length === 0 || selectedAvailability.includes(availabilityLabel);
 
-      return matchesCategory && matchesCondition && matchesAvailability;
+      const lowerQuery = searchQuery.toLowerCase();
+      const matchesSearch =
+        item.name.toLowerCase().includes(lowerQuery) ||
+        item.category.toLowerCase().includes(lowerQuery) ||
+        item.owner.toLowerCase().includes(lowerQuery) ||
+        item.condition.toLowerCase().includes(lowerQuery) ||
+        item.description.toLowerCase().includes(lowerQuery);
+
+      return matchesCategory && matchesCondition && matchesAvailability && matchesSearch;
     });
-  }, [items, selectedCategories, selectedConditions, selectedAvailability]);
+  }, [
+    items,
+    selectedCategories,
+    selectedConditions,
+    selectedAvailability,
+    searchQuery,
+  ]);
 
   return (
     <PageContainer>
-      <div style={{ display: "flex", gap: "2rem", width: "100%" }}>
-        <aside
-          style={{
-            width: "240px",
-            flexShrink: 0,
-            minWidth: "240px",
-          }}
-        >
+      <div style={{ display: "flex", gap: "2rem" }}>
+
           <Filter
             categories={allCategories}
             conditions={allConditions}
@@ -58,23 +70,17 @@ const Home = () => {
             selectedCategories={selectedCategories}
             selectedConditions={selectedConditions}
             selectedAvailability={selectedAvailability}
+            searchQuery={searchQuery}
+            onSearchChange={(query) => handleFilterChange("search", query)}
             onChange={handleFilterChange}
+            setMobileOpen={setMobileOpen}
+            mobileOpen={mobileOpen}
           />
-        </aside>
-
-        <section
-          style={{
-            flex: 1,
-            display: "grid",
-            gap: "1.5rem",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            minWidth: 0,
-          }}
-        >
-          {filteredItems.map((item: Item) => (
-            <ProductCard key={item.id} product={item} />
-          ))}
-        </section>
+        <ProductSection
+         filteredItems={filteredItems} 
+         setMobileOpen={setMobileOpen}
+         mobileOpen={mobileOpen}
+         />
       </div>
     </PageContainer>
   );

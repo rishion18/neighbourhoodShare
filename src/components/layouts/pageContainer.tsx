@@ -19,6 +19,7 @@ const PageContainer = ({
       sx={{
         py: 3,
         px: { xs: 2, sm: 3 }, 
+         width: "81%", margin: 'auto'
       }}
     >
       {children}

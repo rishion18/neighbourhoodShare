@@ -7,6 +7,7 @@ type Props = {
   height?: number | string;
   width?: number | string;
   style?: React.CSSProperties;
+  clickable?: boolean;
 };
 
 const Image = ({
@@ -20,6 +21,7 @@ const Image = ({
 
   return (
     <Box
+    
       sx={{
         height,
         width,

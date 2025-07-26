@@ -8,6 +8,7 @@ import {
   Box,
 } from "@mui/material";
 import Image from "../common/image";
+import { useNavigate } from "react-router-dom";
 
 export type Item = {
   id: string;
@@ -27,12 +28,20 @@ type Props = {
 };
 
 const ItemCard = ({ product }: Props) => {
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/items/${product.id}`);
+  }
+
   return (
     <Card
       sx={{
         mt: 2,
         width: "100%",
-        maxWidth: 400,
+        maxWidth: 260,
+        maxHeight:415,
         boxShadow: 1,
         borderRadius: 2,
         display: "flex",
@@ -40,6 +49,9 @@ const ItemCard = ({ product }: Props) => {
         height: "100%", 
       }}
     >
+      <Button
+       onClick={handleClick}
+      >
       <Image
         src={product.image}
         alt={product.name}
@@ -48,7 +60,9 @@ const ItemCard = ({ product }: Props) => {
           borderTopLeftRadius: "8px",
           borderTopRightRadius: "8px",
         }}
-      />
+      />        
+      </Button>
+
 
       <CardContent sx={{ flexGrow: 1 }}>
         <Box
