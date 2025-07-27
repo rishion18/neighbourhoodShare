@@ -40,7 +40,7 @@ const ItemCard = ({ product }: Props) => {
       sx={{
         mt: 2,
         width: "100%",
-        maxWidth: 260,
+        maxWidth: {xs:455 , md: 260},
         maxHeight:415,
         boxShadow: 1,
         borderRadius: 2,

@@ -11,6 +11,7 @@ import {
   ListItemText,
   Toolbar,
   Typography,
+  Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
@@ -84,6 +85,17 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
             <Typography variant="h6" sx={{ flexGrow: 1, color: "black" }}>
               Neighborhood Share
             </Typography>
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              {navItems.map((item) => (
+                <Button
+                  key={item.label}
+                  sx={{ color: "black", ml: 2, textTransform:"none"}}
+                  onClick={() => navigate(item.path)}
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </Box>
           </Toolbar>
         </Box>
       </AppBar>
