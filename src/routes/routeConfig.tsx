@@ -5,6 +5,7 @@ import { ADD_ITEM } from "../components/features/addItem";
 import { MY_REQUESTS } from "../components/features/myRequests";
 import { MY_PROFILE } from "../components/features/profileDetails";
 import { MAP } from "../components/features/map";
+import NotFoundPage from "../pages/notFoundPage";
 
 export type RouteConfig = {
   path: string;
@@ -18,5 +19,5 @@ export const routes: RouteConfig[] = [
   { path: "/my-requests", element: <MY_REQUESTS/> },
   { path: "/map", element: <MAP/> },
   { path: "/profile", element: <MY_PROFILE/> },
-  { path: "*", element: <h1 style={{color:'red'}}>404 Not Found</h1> },
+  { path: "*", element:<NotFoundPage/>  },
 ];
