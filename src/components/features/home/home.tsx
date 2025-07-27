@@ -1,5 +1,4 @@
 import { useItems } from "../../../hooks/useItems";
-import type { Item } from "../../../redux/slices/item.slice";
 import PageContainer from "../../layouts/pageContainer";
 import { useMemo, useState } from "react";
 import ProductSection from "./productSection";

@@ -1,11 +1,9 @@
-// pages/item/[id].tsx
 import {
   Box,
   Typography,
   Button,
   Card,
   CardMedia,
-  CardContent,
   Chip,
 } from "@mui/material";
 import PageContainer from "../../layouts/pageContainer";

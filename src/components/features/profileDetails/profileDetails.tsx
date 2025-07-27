@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   CardContent,
-  Divider,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";

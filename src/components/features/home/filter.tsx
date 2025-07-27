@@ -1,14 +1,12 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import MultiSelectDropdown from "../../ui/mutiSelectDropdown";
 import {
   TextField,
   Drawer,
-  IconButton,
   Button,
   Box,
   Divider,
 } from "@mui/material";
-import FilterListIcon from "@mui/icons-material/FilterList";
 
 interface FilterProps {
   categories: string[];
